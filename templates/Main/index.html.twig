@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block main %}
+    <h1 style="text-align: center">Товары</h1>
+    <div class = 'grid'>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>Наименование товара</th>
+                <th>Количество</th>
+                <th>Единицы измерения</th>
+                <th>Цена за единицу</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            {% if items != null %}
+                {% for item in items %}
+                    {% if item.isDeleted == false %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.count }}</td>
+                            <td>{{ item.units }}</td>
+                            <td>{{ item.price }}</td>
+                            <td style="width: 15px">
+                                <a href="{{ path('app_delete_item', {'item_id':item.id}) }}">
+                                    <img src = "{{ asset('icons/free-icon-font-cross-3917189.svg') }}" width="20px" height="30px">
+                                </a>
+                            </td>
+                            <td style="width: 15px">
+                                <a href="{{ path('app_edit_item', {"item_id": item.id}) }}">
+                                    <img src = "{{ asset('icons/free-icon-font-pencil-3917376.svg') }}" width="20px" height="20px">
+                                </a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}
