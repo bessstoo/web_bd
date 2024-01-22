@@ -16,8 +16,6 @@ class AddItemType extends AbstractType
     {
         $builder
             ->add('name',TextType::class ,['label' => "Наименование товара:"] )
-            ->add('count',IntegerType::class, ['label' => "Количество:"])
-            ->add('units',TextType::class, ['label' => "Единица измерения:"])
             ->add('price',IntegerType::class, ['label' => "Цена за единицу:"])
             ->add('save', SubmitType::class, ['label' => "Сохранить"])
         ;

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block add_button %}
+    <a href="{{ path('app_add_ItemsInInvoice')}}" style="text-decoration: none; color: #FFFFFF"><img src="{{ asset('icons/icons8-plus.svg') }}"></a>
+{% endblock %}
+{% block main %}
+    <h1 style="text-align: center">Приход/Расход</h1>
+    <div class = 'grid'>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>Наименование товара</th>
+                <th>Номер накладной</th>
+                <th>Количество</th>
+            </tr>
+            {% if items != null %}
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.productId.name }}</td>
+                        <td>{{ item.invoiceId.number }}</td>
+                        <td>{{ item.count}}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}

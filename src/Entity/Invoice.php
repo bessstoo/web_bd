@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductsRepository;
+use App\Repository\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ProductsRepository::class)]
-class Products
+#[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+class Invoice
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,19 +16,12 @@ class Products
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $number = null;
 
-    #[ORM\Column]
-    #[Assert\Range(
-        min: 1,
-        minMessage: 'Цена должна быть больше 0'
-    )]
-    private ?float $price = null;
+    #[ORM\Column(length: 20)]
+    private ?string $type = null;
 
-    #[ORM\Column]
-    private ?bool $IsDeleted = null;
-
-    #[ORM\OneToMany(mappedBy: 'Product_Id', targetEntity: ItemsInInvoice::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Invoice_id', targetEntity: ItemsInInvoice::class, orphanRemoval: true)]
     private Collection $itemsInInvoices;
 
     public function __construct()
@@ -42,38 +34,26 @@ class Products
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNumber(): ?string
     {
-        return $this->name;
+        return $this->number;
     }
 
-    public function setName(string $name): static
+    public function setNumber(string $number): static
     {
-        $this->name = $name;
+        $this->number = $number;
 
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getType(): ?string
     {
-        return $this->price;
+        return $this->type;
     }
 
-    public function setPrice(float $price): static
+    public function setType(string $type): static
     {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function isIsDeleted(): ?bool
-    {
-        return $this->IsDeleted;
-    }
-
-    public function setIsDeleted(bool $IsDeleted): static
-    {
-        $this->IsDeleted = $IsDeleted;
+        $this->type = $type;
 
         return $this;
     }
@@ -90,7 +70,7 @@ class Products
     {
         if (!$this->itemsInInvoices->contains($itemsInInvoice)) {
             $this->itemsInInvoices->add($itemsInInvoice);
-            $itemsInInvoice->setProductId($this);
+            $itemsInInvoice->setInvoiceId($this);
         }
 
         return $this;
@@ -100,8 +80,8 @@ class Products
     {
         if ($this->itemsInInvoices->removeElement($itemsInInvoice)) {
             // set the owning side to null (unless already changed)
-            if ($itemsInInvoice->getProductId() === $this) {
-                $itemsInInvoice->setProductId(null);
+            if ($itemsInInvoice->getInvoiceId() === $this) {
+                $itemsInInvoice->setInvoiceId(null);
             }
         }
 
